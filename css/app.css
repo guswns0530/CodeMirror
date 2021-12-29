@@ -1,0 +1,98 @@
+* {
+  box-sizing: border-box;
+}
+
+.textarea {
+  width: 100%;
+  height: 700px;
+}
+
+.active-scroll {
+  overflow-y: scroll !important;
+}
+
+#code-mirror {
+  font-family: 나눔고딕코딩, Consolas, "Courier New", monospace;
+  background-color: rgb(30, 30, 30);
+  font-size: 18px;
+  line-height: 24px;
+
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  color: rgb(128, 128, 128);
+
+  top: 0;
+  left: 0;
+
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+
+  overflow: hidden;
+}
+
+#code-mirror > div {
+  min-height: 24px;
+  line-height: 24px;
+}
+
+#code-mirror:focus-visible {
+  outline: none;
+}
+
+#code-mirror-textarea {
+  font-size: 18px;
+  line-height: 24px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  resize: none;
+  font-family: 나눔고딕코딩, Consolas, "Courier New", monospace;
+  color: transparent !important;
+  caret-color: white;
+
+  min-height: 100%;
+
+  overflow: hidden;
+}
+
+#code-mirror-textarea {
+  -webkit-user-modify: read-write;
+  overflow-wrap: break-word;
+  -webkit-line-break: after-white-space;
+}
+
+#code-mirror-textarea > div {
+  min-height: 24px;
+  line-height: 24px;
+}
+
+#code-mirror-textarea:focus-visible {
+  outline: none;
+}
+
+#code-mirror-textarea::-webkit-scrollbar {
+  border-left: solid 1px #393939;
+  width: 18px;
+}
+#code-mirror-textarea::-webkit-scrollbar-thumb {
+  background: #424242;
+  transition: 0.3s all;
+}
+#code-mirror-textarea::-webkit-scrollbar-thumb:hover {
+  background: #737d86;
+}
+
+#code-mirror::-webkit-scrollbar {
+  width: 18px;
+  background-color: transparent;
+}
+#code-mirror::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
