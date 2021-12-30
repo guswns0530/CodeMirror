@@ -166,6 +166,8 @@ class CodeMirror {
 
     return list.join("\n");
   }
+
+  setText() {}
 }
 
 window.codeMirror = new CodeMirror(document.querySelector(".textarea"));
