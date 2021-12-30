@@ -74,10 +74,6 @@ class CodeMirror {
     const { childNodes } = this.codeMirrorTextarea;
     const list = this.setList(childNodes);
 
-    const { onselectstart } = this.codeMirrorTextarea;
-
-    console.log(onselectstart);
-
     this.codeMirror.innerHTML = "";
 
     list.forEach((str) => {
@@ -140,27 +136,6 @@ class CodeMirror {
       }
 
       list.push(textContent);
-
-      //     if (
-      //       (Node.TEXT_NODE === prevNode.nodeType &&
-      //         Node.TEXT_NODE === node.nodeType) ||
-      //       node.nodeName === "SPAN"
-      //     ) {
-      //       console.log("no block text", node.textContent);
-      //       list[list.length - 1] = list[list.length - 1] + node.textContent;
-      //       continue;
-      //     } else if (node.childNodes) {
-      //       const findList = this.setList(node.childNodes);
-
-      //       if (findList.length === 0) {
-      //         list.push("");
-      //         continue;
-      //       }
-      //       list.push(...findList);
-      //       continue;
-      //     }
-
-      // list.push(textContent);
     }
 
     return list;
@@ -169,6 +144,7 @@ class CodeMirror {
   removeStyleEvent(div) {
     div.childNodes.forEach((node) => {
       node.style = "";
+      node.className = "";
       if (node.childNodes) {
         this.removeStyleEvent(node);
       }
@@ -177,7 +153,19 @@ class CodeMirror {
 
   resetTextArea(e) {
     this.codeMirrorTextarea.innerHTML = this.codeMirror.innerHTML;
+    this.removeStyleEvent(this.codeMirrorTextarea);
+  }
+
+  setText() {}
+
+  getText() {
+    const list = [];
+    this.codeMirror.childNodes.forEach((node) => {
+      list.push(node.innerText);
+    });
+
+    return list.join("\n");
   }
 }
 
-const codeMirror = new CodeMirror(document.querySelector(".textarea"));
+window.codeMirror = new CodeMirror(document.querySelector(".textarea"));
