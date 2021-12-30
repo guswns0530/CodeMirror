@@ -7,7 +7,7 @@ class CodeMirror {
 
   init() {
     this.textarea.innerHTML = `<div id="code-mirror"></div>
-        <div id="code-mirror-textarea"></div>`;
+        <div id="code-mirror-textarea" spellcheck="false"></div>`;
     this.textarea.style = "position: relative;";
 
     this.codeMirror = this.textarea.querySelector("#code-mirror");
@@ -26,11 +26,15 @@ class CodeMirror {
     this.codeMirrorTextarea.addEventListener("scroll", (e) => {
       this.scrollEvent(e);
     });
+
+    this.codeMirrorTextarea.addEventListener("blur", () => {
+      this.resetTextArea();
+    });
   }
 
   inputCodeMirrorEvent = (e) => {
     //본문 removeStyle
-    this.removeStyleEvent(e)
+    this.removeStyleEvent(this.codeMirrorTextarea);
 
     // rendering
     this.changeEvent(e);
@@ -69,6 +73,10 @@ class CodeMirror {
   changeEvent(e) {
     const { childNodes } = this.codeMirrorTextarea;
     const list = this.setList(childNodes);
+
+    const { onselectstart } = this.codeMirrorTextarea;
+
+    console.log(onselectstart);
 
     this.codeMirror.innerHTML = "";
 
@@ -109,18 +117,16 @@ class CodeMirror {
 
       if (Node.TEXT_NODE === node.nodeType || node.nodeName === "SPAN") {
         if (Node.TEXT_NODE === prevNode.nodeType) {
-          
-        }
-      }
+          list[list.length - 1] = list[list.length - 1] + node.textContent;
 
-      if (
-        (Node.TEXT_NODE === prevNode.nodeType &&
-          Node.TEXT_NODE === node.nodeType) ||
-        node.nodeName === "SPAN"
-      ) {
-        console.log("no block text", node.textContent);
-        list[list.length - 1] = list[list.length - 1] + node.textContent;
-        continue;
+          continue;
+        }
+
+        if (prevNode.nodeName === "SPAN") {
+          list[list.length - 1] = list[list.length - 1] + node.textContent;
+
+          continue;
+        }
       } else if (node.childNodes) {
         const findList = this.setList(node.childNodes);
 
@@ -128,18 +134,49 @@ class CodeMirror {
           list.push("");
           continue;
         }
+
         list.push(...findList);
         continue;
       }
 
       list.push(textContent);
+
+      //     if (
+      //       (Node.TEXT_NODE === prevNode.nodeType &&
+      //         Node.TEXT_NODE === node.nodeType) ||
+      //       node.nodeName === "SPAN"
+      //     ) {
+      //       console.log("no block text", node.textContent);
+      //       list[list.length - 1] = list[list.length - 1] + node.textContent;
+      //       continue;
+      //     } else if (node.childNodes) {
+      //       const findList = this.setList(node.childNodes);
+
+      //       if (findList.length === 0) {
+      //         list.push("");
+      //         continue;
+      //       }
+      //       list.push(...findList);
+      //       continue;
+      //     }
+
+      // list.push(textContent);
     }
 
     return list;
   };
 
-  removeStyle(div) {
-    div.childNodes.forEach((node) => {});
+  removeStyleEvent(div) {
+    div.childNodes.forEach((node) => {
+      node.style = "";
+      if (node.childNodes) {
+        this.removeStyleEvent(node);
+      }
+    });
+  }
+
+  resetTextArea(e) {
+    this.codeMirrorTextarea.innerHTML = this.codeMirror.innerHTML;
   }
 }
 
